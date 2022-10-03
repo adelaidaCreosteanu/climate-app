@@ -1,8 +1,11 @@
 import logging
 from fastapi import FastAPI
+from fastapi import Response
+from fastapi import status
 from fastapi.middleware.cors import CORSMiddleware
 from processor import reformat_emissions
-from queries import get_sector_from_subsector, get_timeseries
+from queries import get_sector_from_subsector
+from queries import get_timeseries
 
 app = FastAPI()
 
@@ -19,22 +22,24 @@ app.add_middleware(
 )
 
 
-@app.get("/timeseries/{subsector}")
-async def timeseries(subsector: str, countries: str):
+@app.get("/timeseries/{subsector}", status_code=200)
+async def timeseries(subsector: str, countries: str, response: Response):
     # Get sector name
     sector = None
     try:
         sector = get_sector_from_subsector(subsector)
     except Exception as ex:
-        # TODO: Raise error to request
         logging.exception(ex)
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"detail": str(ex)}
 
     # Get timeseries
     try:
         emissions = get_timeseries(sector, countries)
     except Exception as ex:
-        # TODO: Raise error to request
         logging.exception(ex)
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return {"detail": str(ex)}
 
     # Parse to list of countries
     formatted_data = reformat_emissions(emissions, subsector)
