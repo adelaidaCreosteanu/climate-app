@@ -31,7 +31,7 @@ export default function EmissionsChart(props: IChartProps) {
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="year" />
-                <YAxis label={{ value: "Tonnes CO2E", angle: -90 }} />
+                <YAxis label={{ value: "M Tonnes CO2E", angle: -90, position: "left" }} />
                 <Tooltip />
                 <Legend />
                 {country_set.map((

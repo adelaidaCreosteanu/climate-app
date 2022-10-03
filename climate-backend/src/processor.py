@@ -38,7 +38,9 @@ def reformat_emissions(emissions: list[dict], subsector: str) -> list[dict]:
             # Add each year of emissions for this country
             for yearly_e in subsector_data["emissions"]:
                 year = yearly_e["year"]
-                country_emissions[year][country_code] = yearly_e["co2100"]
+                # Convert to million tonnes
+                million_co2 = yearly_e["co2100"] / 1000000
+                country_emissions[year][country_code] = million_co2
 
     # Add year attribute to each dict
     country_emissions = {
