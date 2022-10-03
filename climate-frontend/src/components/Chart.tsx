@@ -9,16 +9,19 @@ import {
 } from "recharts";
 
 interface IChartProps {
-    subsector: ISubsectorEmission | undefined
+    subsector: IYearlyEmissions[] | undefined
 }
 
 export default function EmissionsChart(props: IChartProps) {
-    if (props.subsector !== undefined) {
+    if (props.subsector && props.subsector?.length > 0) {
+        const country_set = Object.keys(props.subsector[0]).filter(x => x !== "year");
+        const lineColors = ["#76b7e6", "#ff7f0e", "#cc0000", "#cd5f96", "#6aa84f", "#16537e", "#906e04"]
+
         return (
             <LineChart
                 width={700}
                 height={400}
-                data={props.subsector.emissions}
+                data={props.subsector}
                 margin={{
                     top: 30,
                     right: 30,
@@ -28,15 +31,21 @@ export default function EmissionsChart(props: IChartProps) {
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="year" />
-                <YAxis label={{ value: "M Tonnes CO2E", angle: -90}}/>
+                <YAxis label={{ value: "Tonnes CO2E", angle: -90 }} />
                 <Tooltip />
                 <Legend />
-                <Line
-                    type="monotone"
-                    dataKey="co2"
-                    stroke="#8884d8"
-                    activeDot={{ r: 8 }}
-                />
+                {country_set.map((
+                    country_code, country_index
+                ) =>
+                    <Line
+                        type="monotone"
+                        dataKey={country_code}
+                        stroke={lineColors[country_index % lineColors.length]}
+                        activeDot={{ r: 8 }}
+                    />
+
+                )}
+
             </LineChart>
         );
     } else {
