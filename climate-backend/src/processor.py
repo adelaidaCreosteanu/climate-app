@@ -47,6 +47,6 @@ def reformat_emissions(emissions: list[dict], subsector: str) -> list[dict]:
         y: dict(data, **{"year": y})
         for y, data in country_emissions.items()
     }
-    # Drop the keys as return as list of yearly emissions
+    # Drop the keys and return as list of yearly emissions
     parsed = list(country_emissions.values())
     return parsed
