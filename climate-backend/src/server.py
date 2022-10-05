@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from fastapi import Response
 from fastapi import status
 from fastapi.middleware.cors import CORSMiddleware
-from processor import reformat_emissions
-from queries import get_sector_from_subsector
-from queries import get_timeseries
+from src.processor import reformat_emissions
+from src.queries import get_sector_from_subsector
+from src.queries import get_timeseries
 
 app = FastAPI()
 
