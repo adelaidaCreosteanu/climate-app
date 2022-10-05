@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import EmissionsChart from "./Chart";
 import Box from "@mui/material/Box";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -8,27 +7,30 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
 
-function FetchData() {
-  const country_codes = {
-    aut: "Austria",
-    fin: "Finland",
-    fra: "France",
-    deu: "Germany",
-    hun: "Hungary",
-    irl: "Ireland",
-    lva: "Latvia",
-    mex: "Mexico",
-    rou: "Romania",
-    swe: "Sweden",
-    tur: "Turkey",
-    gbr: "United Kingdom",
-  };
+const country_codes = {
+  aut: "Austria",
+  fin: "Finland",
+  fra: "France",
+  deu: "Germany",
+  hun: "Hungary",
+  irl: "Ireland",
+  lva: "Latvia",
+  mex: "Mexico",
+  rou: "Romania",
+  swe: "Sweden",
+  tur: "Turkey",
+  gbr: "United Kingdom",
+};
 
-  const [emissions, setEmissions] = useState<IYearlyEmissions[] | undefined>(
-    undefined
-  );
+interface IProps {
+  setEmissions: React.Dispatch<
+    React.SetStateAction<IYearlyEmissions[] | undefined>
+  >;
+  setLoadingData: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function CountrySelect(props: IProps) {
   const [countries, setCountries] = useState<string[]>([]);
-  const [loadingData, setLoadingData] = useState<boolean>(false);
 
   useEffect(() => {
     if (countries.length > 0) {
@@ -38,16 +40,16 @@ function FetchData() {
 
   const getApiData = () => {
     const subsector: string = "electricity-generation";
-    setLoadingData(true);
+    props.setLoadingData(true);
     fetch(
       `http://127.0.0.1:8000/timeseries/${subsector}?countries=${countries.join()}`
     )
       .then((response) => response.json())
       .then((yearlyCountryEmissions: IYearlyEmissions[]) => {
-        setEmissions(yearlyCountryEmissions);
-        setLoadingData(false);
+        props.setEmissions(yearlyCountryEmissions);
+        props.setLoadingData(false);
       })
-      .catch((e) => setLoadingData(false));
+      .catch((e) => props.setLoadingData(false));
   };
 
   const handleChange = (event: SelectChangeEvent<typeof countries>) => {
@@ -91,15 +93,8 @@ function FetchData() {
           </Select>
         </FormControl>
       </div>
-      <div>
-        {loadingData ? (
-          "Loading Data"
-        ) : (
-          <EmissionsChart subsector={emissions} />
-        )}
-      </div>
     </div>
   );
 }
 
-export default FetchData;
+export default CountrySelect;
