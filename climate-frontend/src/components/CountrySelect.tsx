@@ -66,7 +66,7 @@ function CountrySelect(props: IProps) {
     <div>
       <div>
         <FormControl sx={{ m: 1, width: 300 }}>
-          <InputLabel id="country-selection-label">Select:</InputLabel>
+          <InputLabel id="country-selection-label">Countries:</InputLabel>
           <Select
             labelId="country-selection-label"
             id="country-selection"
