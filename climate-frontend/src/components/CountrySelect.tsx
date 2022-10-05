@@ -42,7 +42,7 @@ function CountrySelect(props: IProps) {
     const subsector: string = "electricity-generation";
     props.setLoadingData(true);
     fetch(
-      `http://127.0.0.1:8000/timeseries/${subsector}?countries=${countries.join()}`
+      `http://15.188.10.81/timeseries/${subsector}?countries=${countries.join()}`
     )
       .then((response) => response.json())
       .then((yearlyCountryEmissions: IYearlyEmissions[]) => {
