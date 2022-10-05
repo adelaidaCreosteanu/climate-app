@@ -16,7 +16,9 @@ const country_codes = {
   irl: "Ireland",
   lva: "Latvia",
   mex: "Mexico",
+  prt: "Portugal",
   rou: "Romania",
+  esp: "Spain",
   swe: "Sweden",
   tur: "Turkey",
   gbr: "United Kingdom",
@@ -42,7 +44,7 @@ function CountrySelect(props: IProps) {
     const subsector: string = "electricity-generation";
     props.setLoadingData(true);
     fetch(
-      `http://15.188.10.81/timeseries/${subsector}?countries=${countries.join()}`
+      `http://localhost:8000/timeseries/${subsector}?countries=${countries.join()}`
     )
       .then((response) => response.json())
       .then((yearlyCountryEmissions: IYearlyEmissions[]) => {
