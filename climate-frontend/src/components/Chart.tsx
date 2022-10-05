@@ -12,20 +12,21 @@ interface IChartProps {
   subsector: IYearlyEmissions[] | undefined;
 }
 
+const lineColors = [
+  "#76b7e6",
+  "#ff7f0e",
+  "#cc0000",
+  "#cd5f96",
+  "#6aa84f",
+  "#16537e",
+  "#906e04",
+];
+
 export default function EmissionsChart(props: IChartProps) {
   if (props.subsector && props.subsector?.length > 0) {
     const country_set = Object.keys(props.subsector[0]).filter(
       (x) => x !== "year"
     );
-    const lineColors = [
-      "#76b7e6",
-      "#ff7f0e",
-      "#cc0000",
-      "#cd5f96",
-      "#6aa84f",
-      "#16537e",
-      "#906e04",
-    ];
 
     return (
       <LineChart
